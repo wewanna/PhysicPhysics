@@ -1,0 +1,42 @@
+cmake_minimum_required( VERSION 3.0 )
+
+project( PhysicPhysics )
+
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+message(STATUS "module path: ${CMAKE_MODULE_PATH}")
+
+add_compile_options( -Os )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17" )
+set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG -Os" )
+set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g" )
+
+add_executable(
+        PhysicPhysics
+        src/main.cpp
+)
+
+# sdl
+find_package( SDL2 REQUIRED )
+include_directories( ${SDL2_INCLUDE_DIR} )
+target_link_libraries( PhysicPhysics ${SDL2_LIBRARY} )
+
+# opengl
+find_package ( OpenGL REQUIRED )
+if (OPENGL_FOUND )
+    target_link_libraries ( PhysicPhysics ${OPENGL_LIBRARY} )
+    target_link_libraries ( PhysicPhysics ${OPENGiL_gl_LIBRARY} )
+    target_link_libraries ( PhysicPhysics ${OPENGL_glu_LIBRARY} )
+endif()
+
+# glm
+find_package( GLM REQUIRED )
+if( GLM_FOUND )
+    include_directories( ${GLM_INCLUDE_DIRS} )
+endif()
+
+# glew
+find_package( GLEW REQUIRED )
+if( GLEW_FOUND )
+    include_directories( ${GLEW_INCLUDE_DIRECTORIES} )
+    target_link_libraries( PhysicPhysics ${GLEW_LIBRARIES} )
+endif()
