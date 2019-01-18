@@ -26,6 +26,7 @@ add_library(
 )
 target_link_libraries(PhysicPhysics imgui)
 include_directories( imgui/ )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -DIMGUI_IMPL_OPENGL_LOADER_GLEW" )
 
 # sdl
 find_package( SDL2 REQUIRED )
