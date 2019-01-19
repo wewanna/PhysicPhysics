@@ -9,21 +9,44 @@ using namespace glm;
 
 particle :: particle()
 {
-    radius = 1;
-    mass = 1;
+    x = 1.0;
+    y = 1.0;
+    radius = 1.0;
+    mass = 1.0;
     velocity = 1.0;
     direction = vec2(1,1);
 }
 
-particle :: particle(int r, int m, double v, vec2 d)
+particle :: particle(double xpos, double ypos, double r, double m, double v, vec2 d)
 {
+    x = xpos;
+    y = ypos;
     radius = r;
     mass = m;
     velocity = v;
     direction = d;
 }
 
-vec2 particle :: breaking(particle target)
+void particle :: moving() {
+    x += velocity * direction.x;
+    y += velocity * direction.y;
+}
+
+void particle :: breakingwall(int wall) {
+    vec2 walldirection;
+
+    switch (wall) {
+        case 1:
+        case 3:
+            walldirection = vec2(1,0);
+        case 2:
+        case 4:
+            walldirection = vec2(0,1);
+    }
+
+}
+
+void particle :: breaking(particle target)
 {
-    
+    x = 2;
 }

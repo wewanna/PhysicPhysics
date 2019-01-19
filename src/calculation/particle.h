@@ -8,12 +8,16 @@ using namespace glm;
 
 class particle {
 private :
-    int radius;
-    int mass;
+    double x;
+    double y;
+    double radius;
+    double mass;
     double velocity;
     vec2 direction;
 public :
     particle ();
-    particle (int r, int mass, double v, vec2 direction);
-    vec2 breaking(particle target);
+    particle (double x, double y, double r, double mass, double v, vec2 direction);
+    void breakingwall(int wall);
+    void moving();
+    void breaking(particle target);
 };
