@@ -7,46 +7,55 @@
 #include <examples/imgui_impl_opengl3.h>
 #include <examples/imgui_impl_sdl.h>
 
-SDL_Window *window;
+#include "Simulation.h"
+#include "Rendering.h"
+#include "SimulationBox.h"
+
+SDL_Window *window = nullptr;
 SDL_GLContext context;
 
 int init();
+void release();
 
-void imgui_render();
+void render_gui();
 
-int main()
-{
+int main() {
   SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS);
-  init();
+  if(0 == init()) {
+    fprintf(stderr, "failed initialize.\n");
+    return -1;
+  }
 
   SDL_Event event;
   int quit = false;
 
-  while(!quit)
-  {
-    while(SDL_PollEvent(&event))
-    {
+  PhysicPhysics::Simulation &simulation = PhysicPhysics::Simulation::Get();
+
+  while(!quit) {
+    while(SDL_PollEvent(&event)) {
       ImGui_ImplSDL2_ProcessEvent(&event);
       if(SDL_QUIT == event.type)
         quit = true;
     }
 
-    imgui_render();
+    simulation.update();
+
+    render_gui();
+
+    render();
 
     SDL_GL_SwapWindow(window);
 
-    SDL_Delay(100);
+    SDL_Delay(16);
   }
 
-  SDL_GL_DeleteContext(context);
-  SDL_DestroyWindow(window);
 
-  SDL_Quit();
+  release();
+
   return 0;
 }
 
-int init()
-{
+int init() {
   // setup opengl
   const char* glsl_version = "#version 410";
 #ifdef __APPLE__
@@ -62,19 +71,20 @@ int init()
 
   window = SDL_CreateWindow("PhsyicPhysics",
                             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                            640, 480, SDL_WINDOW_OPENGL);
-  if(nullptr == window)
-  {
+                            960, 720, SDL_WINDOW_OPENGL);
+  if(nullptr == window) {
     fprintf(stderr, "failed to create window\n");
     return false;
   }
 
   context = SDL_GL_CreateContext(window);
-  if(GLEW_OK != glewInit())
-  {
+  if(GLEW_OK != glewInit()) {
     fprintf(stderr, "failed initialize glew(opengl loader)\n");
     return false;
   }
+
+  // setup opengl
+  glEnable(GL_PROGRAM_POINT_SIZE);
 
   // setup imgui
   IMGUI_CHECKVERSION();
@@ -85,20 +95,27 @@ int init()
   ImGui_ImplSDL2_InitForOpenGL(window, context);
   ImGui_ImplOpenGL3_Init(glsl_version);
 
-  return true;
+  return init_shader();
 }
 
-void imgui_render()
-{
+void release() {
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplSDL2_Shutdown();
+
+  SDL_GL_DeleteContext(context);
+  SDL_DestroyWindow(window);
+
+  SDL_Quit();
+}
+
+void render_gui() {
   ImGuiIO &io = ImGui::GetIO();
 
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplSDL2_NewFrame(window);
   ImGui::NewFrame();
 
-  ImGui::Begin("Hello");
-  ImGui::Text("Hello World!!");
-  ImGui::End();
+  PhysicPhysics::Simulation::Get().render_gui();
 
   ImGui::Render();
   SDL_GL_MakeCurrent(window, context);

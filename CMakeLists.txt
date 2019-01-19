@@ -13,6 +13,9 @@ set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g" )
 add_executable(
         PhysicPhysics
         src/main.cpp
+        src/SimulationBox.cpp
+        src/Rendering.cpp
+        src/Simulation.cpp
 )
 
 add_library(
@@ -26,7 +29,7 @@ add_library(
 )
 target_link_libraries(PhysicPhysics imgui)
 include_directories( imgui/ )
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -DIMGUI_IMPL_OPENGL_LOADER_GLEW" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIMGUI_IMPL_OPENGL_LOADER_GLEW" )
 
 # sdl
 find_package( SDL2 REQUIRED )
@@ -40,6 +43,7 @@ if (OPENGL_FOUND )
     target_link_libraries ( PhysicPhysics ${OPENGiL_gl_LIBRARY} )
     target_link_libraries ( PhysicPhysics ${OPENGL_glu_LIBRARY} )
 endif()
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGL_SILENCE_DEPRECATION" )
 
 # glm
 find_package( GLM REQUIRED )
