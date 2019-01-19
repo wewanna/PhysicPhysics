@@ -17,7 +17,6 @@ SDL_GLContext context;
 
 int init();
 void release();
-
 void render_gui();
 
 int main() {

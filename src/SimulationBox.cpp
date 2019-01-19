@@ -59,11 +59,11 @@ void SimulationBox::render() {
 
 void SimulationBox::render_gui() {
   ImGui::Begin("SimulationBox");
-  ImGui::SliderFloat("width", &m_size.x, 0.5f, 3.0f);
-  ImGui::SliderFloat("height", &m_size.y, 0.5f, 3.0f);
-  ImGui::SliderFloat("temperature", &m_temperature, 1.0f, 373.0f);
-  ImGui::Text("Pressure : %.4f\n", getPressure());
-  ImGui::Text("Surface : %.4f\n", m_size.x*m_size.y);
+  ImGui::SliderFloat("width", &m_size.x, 0.5f, 2.0f);
+  ImGui::SliderFloat("height", &m_size.y, 0.5f, 2.0f);
+  ImGui::SliderFloat("T", &m_temperature, 1.0f, 373.0f);
+  ImGui::Text("P : %.4f\n", getPressure());
+  ImGui::Text("S : %.4f\n", m_size.x*m_size.y);
   ImGui::End();
 }
 

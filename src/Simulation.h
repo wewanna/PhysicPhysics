@@ -7,9 +7,22 @@
 
 #include "SimulationBox.h"
 
+#include <chrono>
 #include <glm/glm.hpp>
 
 namespace PhysicPhysics {
+typedef std::chrono::duration<uint32_t, std::milli> milliseconds;
+typedef std::chrono::system_clock::time_point time_point;
+constexpr milliseconds IDEAL_DELTATIME(33);
+
+class Time {
+ public:
+  Time();
+
+  Time(const Time &other) = default;
+
+  ~Time() = default;
+};
 class Simulation {
  private:
   Simulation();
@@ -31,12 +44,24 @@ class Simulation {
 
   float getParticleSize() const;
 
+  float getDeltaTime() const;
+
+  float getSimulatingTime() const;
+
  public:
   static Simulation &Get();
 
  private:
-  float m_particle_size;
-  float m_scale;
+  struct {
+    float particle_size;
+    float scale;
+    float timescale;
+  } m_environment;
+  struct {
+    time_point now;
+    time_point start;
+    milliseconds deltatime;
+  } m_time;
   glm::mat4 m_projection;
   SimulationBox m_simulation_box;
 };
