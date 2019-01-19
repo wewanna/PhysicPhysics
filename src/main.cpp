@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include <examples/imgui_impl_opengl3.h>
 #include <examples/imgui_impl_sdl.h>
+#include "calculation/particle.h"
 
 SDL_Window *window;
 SDL_GLContext context;

@@ -13,6 +13,7 @@ set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g" )
 add_executable(
         PhysicPhysics
         src/main.cpp
+        src/calculation/particle.cpp
 )
 
 add_library(
