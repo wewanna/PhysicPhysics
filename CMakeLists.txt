@@ -16,6 +16,7 @@ add_executable(
         src/SimulationBox.cpp
         src/Rendering.cpp
         src/Simulation.cpp
+        src/calculation/particle.cpp
 )
 
 add_library(
