@@ -34,7 +34,7 @@ class SimulationBox {
 
   void resize(glm::vec2 size);
 
-//  int isInBox(glm::vec2 p)const;
+  int isIncludingPoint(glm::vec2 p)const;
 
   float getPressure()const;
 
