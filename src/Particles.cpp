@@ -46,8 +46,8 @@ void Particles::update() {
 
 void Particles::render() {
   glBindVertexArray(m_vao);
-  // glDrawArrays(GL_POINTS, 0, m_count);
- glDrawArrays(GL_POINTS, 0, 4);
+  glDrawArrays(GL_POINTS, 0, m_count);
+  // glDrawArrays(GL_POINTS, 0, 4);
   glBindVertexArray(0);
 }
 
