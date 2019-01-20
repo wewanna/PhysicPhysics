@@ -6,18 +6,19 @@
 
 using namespace glm;
 
+namespace PhysicPhysics {
 class particle {
-public :
-    float x;
-    float y;
-    float radius;
-    float mass;
-    double velocity;
-    vec2 direction;
-    particle ();
-    particle (double x, double y);
-    particle (double x, double y, double r, double mass, vec2 d);
-    void breakingwall(int wall);
-    void moving();
-    void breaking(particle target);
+ public:
+  static float radius;
+  static float mass;
+ public :
+  vec2 position;
+  vec2 direction;
+  particle();
+  particle(vec2 &p);
+  particle(vec2 &p, vec2 &d);
+  void breakingwall(int wall);
+  void moving(float deltatime);
+  void breaking(particle &target);
 };
+}

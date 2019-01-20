@@ -33,6 +33,8 @@ class Simulation {
 
   void render_gui();
 
+  void reset();
+
   const glm::mat4 &getProjection() const;
 
   float getParticleSize() const;

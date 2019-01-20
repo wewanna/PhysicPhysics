@@ -12,7 +12,7 @@
 
 namespace PhysicPhysics {
 Simulation::Simulation()
-:m_environment({4, 2.0f, 1.0f, 1.0f, 500}), m_time(), m_projection(),
+:m_environment({4, 2.0f, 1.0f, 1.0f, 100}), m_time(), m_projection(),
 m_simulation_box(), m_particles() {
   m_time.now = m_time.start = std::chrono::system_clock::now();
   m_particles.reset(m_environment.particle_count,
@@ -57,11 +57,20 @@ void Simulation::render_gui() {
   ImGui::SliderFloat("scale", &m_environment.scale, 2.0f, 4.0f);
   ImGui::SliderFloat("TimeScale", &m_environment.timescale, 0.1f, 2.0f);
   ImGui::SliderInt("pcount", &m_environment.particle_count, 100, 4096);
+  ImGui::SliderFloat("pradius", &particle::radius, 0.01f, 0.1f);
   ImGui::SliderFloat("T", &m_environment.temperature, 1.0f, 373.0f);
-  ImGui::Button("Reset");
+  if(ImGui::Button("Reset"))
+    reset();
   ImGui::Text("fps : %d", (int)(1000/m_time.deltatime.count()));
   ImGui::Text("Simulating Time : %.2f", getSimulatingTime());
+
   ImGui::End();
+}
+
+void Simulation::reset() {
+  m_particles.reset(m_environment.particle_count,
+      m_simulation_box.getSize(),
+      m_environment.temperature);
 }
 
 const glm::mat4 &Simulation::getProjection() const {
@@ -73,7 +82,7 @@ float Simulation::getParticleSize() const {
 }
 
 float Simulation::getDeltaTime() const {
-  return (m_time.deltatime.count()/1000.0f);
+  return (m_time.deltatime.count()/1000.0f)*m_environment.timescale;
 }
 
 float Simulation::getSimulatingTime() const {

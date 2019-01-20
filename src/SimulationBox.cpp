@@ -81,12 +81,16 @@ void SimulationBox::resize(glm::vec2 size) {
 
 int SimulationBox::isIncludingPoint(glm::vec2 p) const {
   glm::vec2 half_size = m_size/2.0f;
-  int in_x = p.x < half_size.x && p.x > -half_size.x;
-  int in_y = p.y < half_size.y && p.y > -half_size.y;
-  if(in_x && in_y)
-    return true;
+  if(p.y > half_size.y)
+    return 1;
+  else if(p.x < -half_size.x)
+    return 2;
+  else if(p.y < -half_size.y)
+    return 3;
+  else if(p.x > half_size.x)
+    return 4;
   else
-    return false;
+    return 0;
 }
 
 float SimulationBox::getPressure() const {

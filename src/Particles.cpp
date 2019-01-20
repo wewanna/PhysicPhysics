@@ -29,15 +29,38 @@ Particles::~Particles() {
   glDeleteVertexArrays(1, &m_vao);
 }
 
-#include <stdio.h>
 void Particles::update() {
+  // check collision
+  glm::vec2 delta(0.0f);
+  float square_radius = particle::radius*particle::radius;
+  Simulation &simulation = Simulation::Get();
+  SimulationBox &simulation_box = simulation.getSimulationBox();
+  int wall = 0;
+
+  for(unsigned int i=0; i<m_count; ++i)
+    m_particles[i].moving(simulation.getDeltaTime());
+
+  for(unsigned int i=0; i<m_count; ++i) {
+    for(unsigned int j=i+1; j<m_count; ++j) {
+      delta = m_particles[i].position - m_particles[j].position;
+      if ((delta.x * delta.x + delta.y * delta.y) < square_radius) {
+        m_particles[i].breaking(m_particles[j]);
+        m_particles[j].breaking(m_particles[i]);
+      }
+    }
+
+    wall = simulation_box.isIncludingPoint(m_particles[i].position);
+    if(0 != wall) {
+      m_particles[i].breakingwall(wall);
+    }
+  }
+
   // update vbo
   constexpr GLbitfield map_buffer_flag = GL_MAP_WRITE_BIT | GL_MAP_FLUSH_EXPLICIT_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
   glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
   auto *v = (glm::vec2*) glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(glm::vec2)*m_count, map_buffer_flag);
   for(unsigned int i=0; i<m_count; ++i) {
-    v[i].x = m_particles[i].x;
-    v[i].y = m_particles[i].y;
+    v[i] = m_particles[i].position;
   }
   glFlushMappedBufferRange(GL_ARRAY_BUFFER, 0, sizeof(glm::vec2)*m_count);
   glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -61,25 +84,25 @@ void Particles::reset(unsigned int count, const glm::vec2 &box_size, float tempe
   std::random_device rd;
   std::mt19937 rnd(rd());
   std::uniform_int_distribution<int> range(0, 1048576);
-  float theta = 0.0f, distance = 0.0f;
+  glm::vec2 position(0.0f), velocity(0.0f);
+  float theta = 0.0f, distance = 0.0f, particle_velocity = sqrtf(2*temperature);
 
   for(unsigned int i=0; i<m_count; ++i) {
     theta = 6.28f*((float)range(rnd)/1048576);
-    distance = box_size.x*((float)range(rnd)/1048576)/2.0f;
-    new (m_particles + i) particle(cosf(theta) * distance, sinf(theta) * distance);
-  }
+    distance = 0.8f*box_size.x*((float)range(rnd)/1048576)/2.0f;
+    position.x = cosf(theta); position.y = sinf(theta);
+    position *= distance;
 
-  glm::vec2 dummy[4] = {
-      {0.5f, 0.5f},
-      {0.5f, -0.5f},
-      {-0.5f, -0.5f},
-      {-0.5f, 0.5f}
-  };
+    theta = 6.28f*((float)range(rnd)/1048576);
+    velocity.x = cosf(theta); velocity.y = sinf(theta);
+    velocity *= particle_velocity;
+
+    new (m_particles + i) particle(position, velocity);
+  }
 
   // resize vbo
   glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2)*m_count, 0, GL_DYNAMIC_DRAW);
-//  glBufferData(GL_ARRAY_BUFFER, sizeof(dummy), dummy, GL_DYNAMIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
