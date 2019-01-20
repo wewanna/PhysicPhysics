@@ -5,9 +5,9 @@ project( PhysicPhysics )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 message(STATUS "module path: ${CMAKE_MODULE_PATH}")
 
-add_compile_options( -Os )
+add_compile_options( -O3 )
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17" )
-set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG -Os" )
+set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG -O3" )
 set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g" )
 
 add_executable(

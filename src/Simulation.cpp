@@ -53,7 +53,7 @@ void Simulation::render_gui() {
   ImGui::Begin("Simulation");
   ImGui::Text("Particle Simulation Program");
   ImGui::Text("Proving PV=NkT (PS=NkT, P=F/L)");
-  ImGui::SliderInt("psize", &m_environment.particle_size, 4, 10);
+  ImGui::SliderInt("psize", &m_environment.particle_size, 1, 7);
   ImGui::SliderFloat("scale", &m_environment.scale, 2.0f, 4.0f);
   ImGui::SliderFloat("TimeScale", &m_environment.timescale, 0.1f, 2.0f);
   ImGui::SliderInt("pcount", &m_environment.particle_count, 1000, 10000);
