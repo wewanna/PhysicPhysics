@@ -40,6 +40,8 @@ class SimulationBox {
 
   const glm::vec2 &getSize() const;
 
+  float getSurface() const;
+
  private:
   glm::vec2 m_size;
   float m_force_sum;

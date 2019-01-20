@@ -10,7 +10,7 @@
 
 namespace PhysicPhysics {
 Particles::Particles()
-:m_particles(nullptr), m_count(0),
+:m_particles(nullptr), m_count(0), m_calculated_temperature(0.0f),
 m_vao(0), m_vbo(0) {
   glGenVertexArrays(1, &m_vao);
   glGenBuffers(1, &m_vbo);
@@ -40,6 +40,7 @@ void Particles::update() {
   for(unsigned int i=0; i<m_count; ++i)
     m_particles[i].moving(simulation.getDeltaTime());
 
+  float squared_velocity_sum = 0.0f, squared_speed = 0.0f;
   for(unsigned int i=0; i<m_count; ++i) {
     for(unsigned int j=i+1; j<m_count; ++j) {
       delta = m_particles[i].position - m_particles[j].position;
@@ -49,11 +50,30 @@ void Particles::update() {
       }
     }
 
+    const glm::vec2 &v = m_particles[i].direction;
     wall = simulation_box.isIncludingPoint(m_particles[i].position);
     if(0 != wall) {
       m_particles[i].breakingwall(wall, simulation_box.getSize());
+      float force = 0.0f;
+      switch(wall) {
+        case 1:
+        case 3: force = v.y; break;
+        case 2:
+        case 4: force = v.x; break;
+        default: break;
+      }
+      simulation_box.force(2*abs(force));
     }
+
+    // calculate sum of v^2
+    squared_speed = v.x*v.x + v.y*v.y;
+    if(!isnan(squared_speed))
+      squared_velocity_sum += squared_speed;
   }
+
+  // calculate temperature
+  squared_velocity_sum /= (float)m_count;
+  m_calculated_temperature = squared_velocity_sum/(3.0f*Simulation::k_b);
 
   // update vbo
   constexpr GLbitfield map_buffer_flag = GL_MAP_WRITE_BIT | GL_MAP_FLUSH_EXPLICIT_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
@@ -105,6 +125,14 @@ void Particles::reset(unsigned int count, const glm::vec2 &box_size, float tempe
   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2)*m_count, 0, GL_DYNAMIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+}
+
+float Particles::getCalculatedTemperature() const {
+  return m_calculated_temperature;
+}
+
+unsigned int Particles::getCount() const {
+  return m_count;
 }
 
 

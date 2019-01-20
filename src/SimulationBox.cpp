@@ -61,8 +61,8 @@ void SimulationBox::render_gui() {
   ImGui::Begin("SimulationBox");
   ImGui::SliderFloat("width", &m_size.x, 0.5f, 2.0f);
   ImGui::SliderFloat("height", &m_size.y, 0.5f, 2.0f);
-  ImGui::Text("P : %.4f\n", getPressure());
-  ImGui::Text("S : %.4f\n", m_size.x*m_size.y);
+  ImGui::Text("P : %.4f (N/m)\n", getPressure());
+  ImGui::Text("S : %.4f (m^2)\n", getSurface());
   ImGui::End();
 }
 
@@ -101,6 +101,9 @@ const glm::vec2 &SimulationBox::getSize() const {
   return m_size;
 }
 
+float SimulationBox::getSurface() const {
+  return m_size.x*m_size.y;
+}
 
 
 

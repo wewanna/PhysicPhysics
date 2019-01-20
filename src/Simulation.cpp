@@ -12,7 +12,7 @@
 
 namespace PhysicPhysics {
 Simulation::Simulation()
-:m_environment({4, 2.0f, 1.0f, 1.0f, 100}), m_time(), m_projection(),
+:m_environment({4, 2.0f, 1.0f, 1.0f, 1000}), m_time(), m_projection(),
 m_simulation_box(), m_particles() {
   m_time.now = m_time.start = std::chrono::system_clock::now();
   m_particles.reset(m_environment.particle_count,
@@ -56,9 +56,16 @@ void Simulation::render_gui() {
   ImGui::SliderInt("psize", &m_environment.particle_size, 4, 10);
   ImGui::SliderFloat("scale", &m_environment.scale, 2.0f, 4.0f);
   ImGui::SliderFloat("TimeScale", &m_environment.timescale, 0.1f, 2.0f);
-  ImGui::SliderInt("pcount", &m_environment.particle_count, 1, 4096);
+  ImGui::SliderInt("pcount", &m_environment.particle_count, 1000, 10000);
   ImGui::SliderFloat("pradius", &particle::radius, 0.001f, 0.01f);
   ImGui::SliderFloat("T", &m_environment.temperature, 1.0f, 373.0f);
+
+  float PS = m_simulation_box.getSurface()*m_simulation_box.getPressure();
+  float NT = m_particles.getCount()*m_particles.getCalculatedTemperature()*k_b;
+  ImGui::Text("P*S = %.3f, N*T = %.3f", PS, NT );
+  ImGui::Text("ratio : %.4f", PS/NT);
+
+
   if(ImGui::Button("Reset"))
     reset();
   ImGui::Text("fps : %d", (int)(1000/m_time.deltatime.count()));

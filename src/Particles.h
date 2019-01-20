@@ -25,9 +25,14 @@ class Particles {
 
   void reset(unsigned int count,  const glm::vec2 &box_size, float temperature);
 
+  float getCalculatedTemperature() const;
+
+  unsigned int getCount() const;
+
  private:
   particle *m_particles;
   unsigned int m_count;
+  float m_calculated_temperature;
 
   GLuint m_vao;
   GLuint m_vbo;
