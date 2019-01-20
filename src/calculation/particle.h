@@ -7,11 +7,11 @@
 using namespace glm;
 
 class particle {
-private :
-    double x;
-    double y;
-    double radius;
-    double mass;
+public :
+    float x;
+    float y;
+    float radius;
+    float mass;
     double velocity;
     vec2 direction;
 public :

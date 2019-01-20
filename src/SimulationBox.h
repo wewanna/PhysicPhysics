@@ -28,7 +28,7 @@ class SimulationBox {
 
   void render_gui();
 
-  void reset(glm::vec2 size, float temperature);
+  void reset(glm::vec2 size);
 
   void force(float force);
 
@@ -38,12 +38,11 @@ class SimulationBox {
 
   float getPressure()const;
 
-  float getTemperature()const;
+  const glm::vec2 &getSize() const;
 
  private:
   glm::vec2 m_size;
   float m_force_sum;
-  float m_temperature;
 
   GLuint m_vao;
   GLuint m_vbo;

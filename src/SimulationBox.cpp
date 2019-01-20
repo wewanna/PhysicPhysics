@@ -16,7 +16,7 @@ glm::vec2 vertices[] = {
 };
 
 SimulationBox::SimulationBox()
-:m_size(1.0f, 1.0f), m_force_sum(0.0f), m_temperature(0.0f),
+:m_size(1.0f, 1.0f), m_force_sum(0.0f),
 m_vao(0), m_vbo(0) {
 
   glGenVertexArrays(1, &m_vao);
@@ -61,15 +61,13 @@ void SimulationBox::render_gui() {
   ImGui::Begin("SimulationBox");
   ImGui::SliderFloat("width", &m_size.x, 0.5f, 2.0f);
   ImGui::SliderFloat("height", &m_size.y, 0.5f, 2.0f);
-  ImGui::SliderFloat("T", &m_temperature, 1.0f, 373.0f);
   ImGui::Text("P : %.4f\n", getPressure());
   ImGui::Text("S : %.4f\n", m_size.x*m_size.y);
   ImGui::End();
 }
 
-void SimulationBox::reset(glm::vec2 size, float temperature) {
+void SimulationBox::reset(glm::vec2 size) {
   m_size = size;
-  m_temperature = temperature;
   m_force_sum = 0.0f;
 }
 
@@ -95,8 +93,8 @@ float SimulationBox::getPressure() const {
   return m_force_sum/(2*(m_size.x+m_size.y));
 }
 
-float SimulationBox::getTemperature() const {
-  return m_temperature;
+const glm::vec2 &SimulationBox::getSize() const {
+  return m_size;
 }
 
 

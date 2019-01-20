@@ -16,7 +16,7 @@ uniform mat4 vp;
 uniform float psize;
 void main() {
   gl_Position = vp * vec4(position, 0.0, 1.0);
-  gl_PointSize = 1.0;
+  gl_PointSize = psize;
 }
   )glsl";
 

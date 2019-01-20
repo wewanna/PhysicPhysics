@@ -6,7 +6,6 @@
 #include <imgui.h>
 #include <examples/imgui_impl_opengl3.h>
 #include <examples/imgui_impl_sdl.h>
-#include "calculation/particle.h"
 
 #include "Simulation.h"
 #include "Rendering.h"

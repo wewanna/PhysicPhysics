@@ -12,9 +12,11 @@
 
 namespace PhysicPhysics {
 Simulation::Simulation()
-:m_environment({0.01f, 2.0f, 1.0f}), m_time(), m_projection(),
-m_simulation_box() {
+:m_environment({4, 2.0f, 1.0f, 1.0f, 500}), m_time(), m_projection(),
+m_simulation_box(), m_particles() {
   m_time.now = m_time.start = std::chrono::system_clock::now();
+  m_particles.reset(m_environment.particle_count,
+      m_simulation_box.getSize(), m_environment.temperature);
 }
 
 void Simulation::update() {
@@ -32,6 +34,7 @@ void Simulation::update() {
 
   // update simulating objects
   m_simulation_box.update();
+  m_particles.update();
 
   // update projection matrix
   float scale_x = m_environment.scale/2.0f;
@@ -41,6 +44,7 @@ void Simulation::update() {
 
 void Simulation::render() {
   m_simulation_box.render();
+  m_particles.render();
 }
 
 void Simulation::render_gui() {
@@ -49,9 +53,12 @@ void Simulation::render_gui() {
   ImGui::Begin("Simulation");
   ImGui::Text("Particle Simulation Program");
   ImGui::Text("Proving PV=NkT (PS=NkT, P=F/L)");
-  ImGui::SliderFloat("psize", &m_environment.particle_size, 0.01f, 0.1f);
+  ImGui::SliderInt("psize", &m_environment.particle_size, 4, 10);
   ImGui::SliderFloat("scale", &m_environment.scale, 2.0f, 4.0f);
   ImGui::SliderFloat("TimeScale", &m_environment.timescale, 0.1f, 2.0f);
+  ImGui::SliderInt("pcount", &m_environment.particle_count, 100, 4096);
+  ImGui::SliderFloat("T", &m_environment.temperature, 1.0f, 373.0f);
+  ImGui::Button("Reset");
   ImGui::Text("fps : %d", (int)(1000/m_time.deltatime.count()));
   ImGui::Text("Simulating Time : %.2f", getSimulatingTime());
   ImGui::End();
@@ -73,6 +80,10 @@ float Simulation::getSimulatingTime() const {
   using std::chrono::duration_cast;
   milliseconds t = duration_cast<milliseconds>(m_time.now - m_time.start);
   return (t.count()/1000.0f);
+}
+
+SimulationBox &Simulation::getSimulationBox() {
+  return m_simulation_box;
 }
 
 Simulation &Simulation::Get() {
