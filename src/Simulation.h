@@ -19,7 +19,7 @@ constexpr milliseconds IDEAL_DELTATIME(33);
 class Simulation {
  public:
   constexpr static float R = 8.314472f;
-  constexpr static unsigned int mol = 1000;
+  constexpr static unsigned int mol = 10000;
   constexpr static float k_b = R/mol;
 
  private:
