@@ -43,9 +43,9 @@ void particle::breakingwall(int wall, const vec2 &size) { // 벽에 부딫쳤을
     }
     switch (wall) {
       case 1: position.y = size.y/2.0f; break;
-      case 2: position.y = -size.x/2.0f; break;
+      case 2: position.x = -size.x/2.0f; break;
       case 3: position.y = -size.y/2.0f; break;
-      case 4: position.y = size.x/2.0f; break;
+      case 4: position.x = size.x/2.0f; break;
       default: break;
     }
 }
