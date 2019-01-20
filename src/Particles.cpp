@@ -51,7 +51,7 @@ void Particles::update() {
 
     wall = simulation_box.isIncludingPoint(m_particles[i].position);
     if(0 != wall) {
-      m_particles[i].breakingwall(wall);
+      m_particles[i].breakingwall(wall, simulation_box.getSize());
     }
   }
 
@@ -85,7 +85,7 @@ void Particles::reset(unsigned int count, const glm::vec2 &box_size, float tempe
   std::mt19937 rnd(rd());
   std::uniform_int_distribution<int> range(0, 1048576);
   glm::vec2 position(0.0f), velocity(0.0f);
-  float theta = 0.0f, distance = 0.0f, particle_velocity = sqrtf(2*temperature);
+  float theta = 0.0f, distance = 0.0f, particle_velocity = sqrtf(3*Simulation::k_b*temperature);
 
   for(unsigned int i=0; i<m_count; ++i) {
     theta = 6.28f*((float)range(rnd)/1048576);

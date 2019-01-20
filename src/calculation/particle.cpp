@@ -32,7 +32,7 @@ void particle::moving(float deltatime) { // 랜더러쪽에서 1초마다 파티
     position += direction * deltatime;
 }
 
-void particle::breakingwall(int wall) { // 벽에 부딫쳤을 때 메소드
+void particle::breakingwall(int wall, const vec2 &size) { // 벽에 부딫쳤을 때 메소드
     // 윗벽 1, 왼쪽벽 2, 아래벽 3, 오른쪽 벽 4
     switch (wall) {
         case 1:
@@ -40,6 +40,13 @@ void particle::breakingwall(int wall) { // 벽에 부딫쳤을 때 메소드
         case 2:
         case 4:direction.x *= -1; break; // 왼쪽벽, 오른쪽벽에 부딫혔을 때 x 축 방향으로의 속도 반대로 바꿈
         default: break;
+    }
+    switch (wall) {
+      case 1: position.y = size.y/2.0f; break;
+      case 2: position.y = -size.x/2.0f; break;
+      case 3: position.y = -size.y/2.0f; break;
+      case 4: position.y = size.x/2.0f; break;
+      default: break;
     }
 }
 

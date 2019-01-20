@@ -17,7 +17,7 @@ class particle {
   particle();
   particle(vec2 &p);
   particle(vec2 &p, vec2 &d);
-  void breakingwall(int wall);
+  void breakingwall(int wall, const vec2 &size);
   void moving(float deltatime);
   void breaking(particle &target);
 };

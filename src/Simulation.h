@@ -17,6 +17,11 @@ typedef std::chrono::system_clock::time_point time_point;
 constexpr milliseconds IDEAL_DELTATIME(33);
 
 class Simulation {
+ public:
+  constexpr static float R = 8.314472f;
+  constexpr static unsigned int mol = 1000;
+  constexpr static float k_b = R/mol;
+
  private:
   Simulation();
 
