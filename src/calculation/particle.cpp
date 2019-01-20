@@ -5,13 +5,13 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <cmath>
 #include "particle.h"
+#include <stdio.h>
 
 using namespace glm;
 
 namespace PhysicPhysics {
 
-float particle::radius = 0.05f;
-float particle::mass = 1.0f;
+float particle::radius = 0.001f;
 
 particle::particle()
 : position(0.0f, 0.0f), direction(0.0f, 0.0f) {
@@ -51,26 +51,27 @@ void particle::breakingwall(int wall, const vec2 &size) { // 벽에 부딫쳤을
 }
 
 void particle::breaking(particle &target) {
-  glm::vec2 dv = this->position - target.position;
+   glm::vec2 dv = this->position - target.position;
 
-  float betdistance = dv.length();
-  float sinTheta = dv.y / betdistance;
-  float cosTheta = dv.x / betdistance;
+    float dx = position.x - target.position.x;
+    float dy = position.y - target.position.y;
+    float betdistance = dv.length();
+    float sinTheta = dy / abs(sqrt(dx*dx + dy*dy));
+    float cosTheta = dx / abs(sqrt(dx*dx + dy*dy));
 
-    //충돌 후 x축으로의 속도
-    float vxAp =
-        (2 * mass) / (mass + mass) * (target.direction.x * cosTheta + target.direction.y * sinTheta);
-    //충돌 후 y축으로의 속도
-    float vyAp = direction.x * (-sinTheta) + target.direction.y * cosTheta;
+    float vxAp = (target.direction.x*cosTheta + target.direction.y*sinTheta);
+    float vyAp = direction.x*(-sinTheta) + target.direction.y*cosTheta;
 
     // 두 공이 겹쳐질 때 분리됨
-//    float angleAB = atan2(dv.y, dv.x);
-//    float angleBA = atan2(-dv.y, -dv.x);
-//    float moveToDistance = abs(radius + target.radius) - betdistance;
-//    position.x = position.x + moveToDistance * cos(angleAB);
+    float dab = abs(sqrt(dx*dx + dy*dy));
 
-    direction.x = vxAp;
-    direction.y = vyAp;
+    float angleAB = atan2(dy,dx);
+    float angleBA = atan2(-dy,-dx); 
+    float moveToDistance = abs(radius + target.radius) - radius;
+    position.x = position.x + moveToDistance * cos(angleAB);
+
+    direction.x = vxAp*cosTheta + vyAp*(-sinTheta);
+    direction.y = vxAp*sinTheta + vyAp*cosTheta;
 
 }
 }

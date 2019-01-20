@@ -32,7 +32,7 @@ Particles::~Particles() {
 void Particles::update() {
   // check collision
   glm::vec2 delta(0.0f);
-  float square_radius = particle::radius*particle::radius;
+  float square_radius = 4*particle::radius*particle::radius;
   Simulation &simulation = Simulation::Get();
   SimulationBox &simulation_box = simulation.getSimulationBox();
   int wall = 0;

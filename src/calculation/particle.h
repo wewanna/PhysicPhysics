@@ -10,7 +10,6 @@ namespace PhysicPhysics {
 class particle {
  public:
   static float radius;
-  static float mass;
  public :
   vec2 position;
   vec2 direction;

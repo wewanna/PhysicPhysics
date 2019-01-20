@@ -56,8 +56,8 @@ void Simulation::render_gui() {
   ImGui::SliderInt("psize", &m_environment.particle_size, 4, 10);
   ImGui::SliderFloat("scale", &m_environment.scale, 2.0f, 4.0f);
   ImGui::SliderFloat("TimeScale", &m_environment.timescale, 0.1f, 2.0f);
-  ImGui::SliderInt("pcount", &m_environment.particle_count, 100, 4096);
-  ImGui::SliderFloat("pradius", &particle::radius, 0.01f, 0.1f);
+  ImGui::SliderInt("pcount", &m_environment.particle_count, 1, 4096);
+  ImGui::SliderFloat("pradius", &particle::radius, 0.001f, 0.01f);
   ImGui::SliderFloat("T", &m_environment.temperature, 1.0f, 373.0f);
   if(ImGui::Button("Reset"))
     reset();
