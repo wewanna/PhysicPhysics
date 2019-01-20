@@ -46,8 +46,8 @@ void Particles::update() {
 
 void Particles::render() {
   glBindVertexArray(m_vao);
-  glDrawArrays(GL_POINTS, 0, m_count);
-//  glDrawArrays(GL_POINTS, 0, 4);
+  // glDrawArrays(GL_POINTS, 0, m_count);
+ glDrawArrays(GL_POINTS, 0, 4);
   glBindVertexArray(0);
 }
 
@@ -64,11 +64,9 @@ void Particles::reset(unsigned int count, const glm::vec2 &box_size, float tempe
   float theta = 0.0f, distance = 0.0f;
 
   for(unsigned int i=0; i<m_count; ++i) {
-    new (m_particles + i) particle();
     theta = 6.28f*((float)range(rnd)/1048576);
     distance = box_size.x*((float)range(rnd)/1048576)/2.0f;
-    m_particles[i].x = cosf(theta) * distance;
-    m_particles[i].y = sinf(theta) * distance;
+    new (m_particles + i) particle(cosf(theta) * distance, sinf(theta) * distance);
   }
 
   glm::vec2 dummy[4] = {

@@ -14,9 +14,9 @@ public :
     float mass;
     double velocity;
     vec2 direction;
-public :
     particle ();
-    particle (double x, double y, double r, double mass, double v, vec2 direction);
+    particle (double x, double y);
+    particle (double x, double y, double r, double mass, vec2 d);
     void breakingwall(int wall);
     void moving();
     void breaking(particle target);
