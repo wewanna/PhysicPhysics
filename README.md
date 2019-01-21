@@ -3,7 +3,7 @@
 ![](https://github.com/wewanna/PhysicPhysics/blob/master/images/scr1.png)
 
 ## 💪Features
-* Simple particle simulator
+* Simple ideal gas particle simulator
 
 ## 📍Requires
 * sdl
