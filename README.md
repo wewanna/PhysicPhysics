@@ -1,6 +1,3 @@
-# PhysicPhysics
-simple particle simulator
-
 # 🎇PhysicPhysics
 
 ![](https://github.com/wewanna/PhysicPhysics/blob/master/images/scr1.png)
