@@ -52,7 +52,7 @@ void particle::breakingwall(int wall, const vec2 &size) { // 벽에 부딫쳤을
 }
 
 void particle::breaking(particle &target) {
-   glm::vec2 dv = this->position - target.position;
+    glm::vec2 dv = this->position - target.position;
 
     float dx = position.x - target.position.x;
     float dy = position.y - target.position.y;
@@ -62,7 +62,12 @@ void particle::breaking(particle &target) {
 
     float vxAp = (target.direction.x*cosTheta + target.direction.y*sinTheta);
     float vyAp = direction.x*(-sinTheta) + target.direction.y*cosTheta;
-
+    
+    float betx = abs(target.position.x - position.x);
+    float bety = abs(target.position.y - position.y);
+    
+    // float xminjae = direction.x + (target.direction.x * (betx*betx) + target.direction.y * betx * bety)  / ((betx*betx) + (bety*bety));
+    // float yminjae = direction.y + (target.direction.x * betx * bety + target.direction.y * (bety * bety)) / ((betx*betx) + (bety*bety));
     // 두 공이 겹쳐질 때 분리됨
     float dab = abs(sqrt(dx*dx + dy*dy));
 
@@ -73,6 +78,9 @@ void particle::breaking(particle &target) {
 
     direction.x = vxAp*cosTheta + vyAp*(-sinTheta);
     direction.y = vxAp*sinTheta + vyAp*cosTheta;
+
+    // direction.x = xminjae;
+    // direction.y = yminjae;
 
 }
 }

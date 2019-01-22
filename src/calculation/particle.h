@@ -12,13 +12,13 @@ class particle {
   static float mass;
   static float radius;
  public :
-  vec2 position;
-  vec2 direction;
-  particle();
+  vec2 position; // 위치 (x, y)
+  vec2 direction; // 방향과 속도 (x방향으로의 속도, y방향으로의 속도)
+  particle(); //생성자
   particle(vec2 &p);
   particle(vec2 &p, vec2 &d);
-  void breakingwall(int wall, const vec2 &size);
-  void moving(float deltatime);
-  void breaking(particle &target);
+  void breakingwall(int wall, const vec2 &size); // 벽에 부딪혔을 때 발생하는 메소드
+  void moving(float deltatime); // 입자가 이동하는 메소드
+  void breaking(particle &target); // 입자끼리 부딪혓을 때 발생하는 메소드
 };
 }
