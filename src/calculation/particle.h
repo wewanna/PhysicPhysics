@@ -9,6 +9,7 @@ using namespace glm;
 namespace PhysicPhysics {
 class particle {
  public:
+  static float mass;
   static float radius;
  public :
   vec2 position;

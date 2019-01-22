@@ -53,17 +53,20 @@ void Simulation::render_gui() {
   ImGui::Begin("Simulation");
   ImGui::Text("Particle Simulation Program");
   ImGui::Text("Proving PV=NkT (PS=NkT, P=F/L)");
+  ImGui::Text("Assume N_avo = %u", mol);
+  ImGui::Text("each particles represents original_N_avo/assumed_N_avo");
   ImGui::SliderInt("psize", &m_environment.particle_size, 1, 7);
   ImGui::SliderFloat("scale", &m_environment.scale, 2.0f, 4.0f);
   ImGui::SliderFloat("TimeScale", &m_environment.timescale, 0.1f, 2.0f);
   ImGui::SliderInt("pcount", &m_environment.particle_count, 1000, 10000);
   ImGui::SliderFloat("pradius", &particle::radius, 0.001f, 0.01f);
+  ImGui::SliderFloat("pmass", &particle::mass, 0.0001f, 0.005f, "%.6f");
   ImGui::SliderFloat("T", &m_environment.temperature, 1.0f, 373.0f);
 
   float PS = m_simulation_box.getSurface()*m_simulation_box.getPressure();
-  float NT = m_particles.getCount()*m_particles.getCalculatedTemperature()*k_b;
-  ImGui::Text("P*S = %.3f, N*T = %.3f", PS, NT );
-  ImGui::Text("ratio : %.4f", PS/NT);
+  float NkT = R*((float)m_particles.getCount()/mol)*m_particles.getCalculatedTemperature();
+  ImGui::Text("P*S = %.3f, NkT = %.3f", PS, NkT );
+  ImGui::Text("ratio : %.4f", PS/NkT);
 
 
   if(ImGui::Button("Reset"))

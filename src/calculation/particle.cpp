@@ -11,6 +11,7 @@ using namespace glm;
 
 namespace PhysicPhysics {
 
+float particle::mass = 0.001f;
 float particle::radius = 0.001f;
 
 particle::particle()
